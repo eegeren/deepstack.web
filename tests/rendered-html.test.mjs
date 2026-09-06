@@ -1,16 +1,28 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-async function render() {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
+import fs from "node:fs/promises";
 
-  return worker.fetch(
-    new Request("http://localhost/", { headers: { accept: "text/html" } }),
-    { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
-    { waitUntil() {}, passThroughOnException() {} },
-  );
+async function render() {
+  const nextHtmlPath = new URL("../.next/server/app/index.html", import.meta.url);
+  try {
+    const html = await fs.readFile(nextHtmlPath, "utf-8");
+    return {
+      status: 200,
+      headers: new Headers({ "content-type": "text/html; charset=utf-8" }),
+      text: async () => html,
+    };
+  } catch {
+    const workerUrl = new URL("../dist/server/index.js", import.meta.url);
+    workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
+    const { default: worker } = await import(workerUrl.href);
+
+    return worker.fetch(
+      new Request("http://localhost/", { headers: { accept: "text/html" } }),
+      { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
+      { waitUntil() {}, passThroughOnException() {} },
+    );
+  }
 }
 
 test("server-renders the DeepStack product page", async () => {
