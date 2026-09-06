@@ -31,8 +31,8 @@ test("server-renders the DeepStack product page", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /<title>DeepStack — AI Infrastructure Engineer<\/title>/i);
-  assert.match(html, /Your infrastructure\./);
+  assert.match(html, /<title>DeepStack — Your AI Infrastructure Engineer<\/title>/i);
+  assert.match(html, /Understand your infrastructure/);
   assert.match(html, /AI Infrastructure Engineer/);
   assert.doesNotMatch(html, /codex-preview|Building your site|vinext-starter/i);
 });
@@ -43,6 +43,7 @@ test("documents the product-facing command surface", async () => {
   for (const command of [
     "deepstack setup",
     "deepstack connect server production",
+    "deepstack connect windows windows-prod",
     "deepstack connect aws production",
     "deepstack targets",
     "deepstack status production",
@@ -66,14 +67,14 @@ test("states current capability and safety boundaries honestly", async () => {
   assert.match(html, /Experimental/);
   assert.match(html, /Plan only/);
   assert.match(html, /Planning never changes infrastructure/);
-  assert.match(html, /No arbitrary shell strings/);
+  assert.match(html, /Predefined provider operations replace arbitrary shell access/);
   assert.match(html, /Telegram, WhatsApp, and web dashboard/);
   assert.match(html, /Not yet available/);
   assert.doesNotMatch(html, /executes safe remediation/i);
   assert.doesNotMatch(html, /rolls back on failure/i);
 });
 
-test("documents Linux and AWS evidence sources", async () => {
+test("documents Linux, Windows Server, and AWS evidence sources", async () => {
   const html = await (await render()).text();
 
   assert.match(html, /What DeepStack can analyze/);
@@ -81,4 +82,15 @@ test("documents Linux and AWS evidence sources", async () => {
   assert.match(html, /Package update count where reliable/);
   assert.match(html, /STS identity and account context/);
   assert.match(html, /Security Groups and public ingress rules/);
+  assert.match(html, /Windows Firewall profiles and RDP\/NLA state/);
+  assert.match(html, /Installed roles including IIS, DNS, DHCP, Hyper-V and AD DS/);
+});
+
+test("states conservative exposure semantics", async () => {
+  const html = await (await render()).text();
+
+  assert.match(html, /A wildcard listener is not proof of internet exposure/);
+  assert.match(html, /CONFIGURATION RISK/);
+  assert.match(html, /EFFECTIVELY EXPOSED/);
+  assert.match(html, /Windows RDP wildcard bindings remain configuration risks/);
 });
