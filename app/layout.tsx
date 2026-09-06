@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "DeepStack — AI Infrastructure Engineer",
   description: "Evidence-driven, policy-controlled AI for AWS and Linux infrastructure operations.",
   metadataBase: new URL("https://nivra.ai"),
+  icons: { icon: "/favicon.svg", apple: "/icon.png" },
   openGraph: { title: "DeepStack — Your AI Infrastructure Engineer", description: "Understand, secure and safely operate your cloud infrastructure.", type: "website", images: [{ url: "/og.png", width: 1200, height: 630, alt: "DeepStack — Your AI Infrastructure Engineer" }] },
   twitter: { card: "summary_large_image", title: "DeepStack — AI Infrastructure Engineer", description: "Evidence-driven. Policy-controlled. Verified.", images: ["/og.png"] },
 };

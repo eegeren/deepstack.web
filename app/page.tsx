@@ -44,8 +44,27 @@ const evidenceSources = {
   AWS: ["STS identity and account context", "IAM users, attached policies and inline policies", "EC2, VPCs, subnets and route tables", "Internet Gateways and Network ACLs", "Security Groups and public ingress rules", "S3 plus provider-independent evidence and findings"],
 };
 
+function Logo({ height = 28, className = "" }: { height?: number; className?: string }) {
+  return (
+    <img
+      src="/deepstack-logo-white.png"
+      alt="DeepStack"
+      height={height}
+      className={`brand-logo ${className}`.trim()}
+    />
+  );
+}
+
 function Mark({ compact = false }: { compact?: boolean }) {
-  return <span className={compact ? "mark compact" : "mark"} aria-label="DeepStack"><i>D</i></span>;
+  return (
+    <img
+      src="/deepstack-icon-white.png"
+      alt=""
+      width={compact ? 22 : 28}
+      height={compact ? 22 : 28}
+      className={compact ? "brand-icon compact" : "brand-icon"}
+    />
+  );
 }
 
 function CodeBlock({ children, title = "terminal" }: { children: React.ReactNode; title?: string }) {
@@ -56,7 +75,10 @@ export default function Home() {
   return (
     <main>
       <header className="topbar">
-        <a className="brand" href="#top"><Mark compact /><span>DeepStack</span><b>AI INFRASTRUCTURE ENGINEER</b></a>
+        <a className="brand" href="#top" aria-label="DeepStack Home">
+          <Logo height={28} />
+          <b>AI INFRASTRUCTURE ENGINEER</b>
+        </a>
         <nav aria-label="Primary navigation"><a href="#product">Product</a><a href="#architecture">Architecture</a><a href="#docs">Docs</a><a href="#security">Security</a></nav>
         <a className="nav-cta" href="#quickstart">Start building <span>↗</span></a>
       </header>
@@ -116,7 +138,14 @@ export default function Home() {
       <section className="modes section" id="modes"><div className="section-intro horizontal"><div><span className="section-kicker">OPERATING BOUNDARY</span><h2>Start with evidence.</h2></div><p>DeepStack&apos;s product surface clearly separates what is available today from experimental execution capabilities.</p></div><div className="mode-grid"><article><span>AVAILABLE</span><h3>OBSERVE</h3><p>Read-only discovery, status, deterministic audit, and structured JSON.</p></article><article className="selected"><span>AVAILABLE · DEFAULT</span><h3>ASSIST</h3><p>Grounded questions, investigations, and non-mutating plans.</p></article><article><span>EXPERIMENTAL</span><h3>APPROVE</h3><p>Approval-gated execution only for explicitly supported actions.</p></article><article><span>NOT YET AVAILABLE</span><h3>AUTOPILOT</h3><p>No broad autonomous execution and no unrestricted shell access.</p></article></div></section>
 
       <section className="final-cta"><div className="cta-grid" aria-hidden="true" /><span>START WITH A NAMED TARGET</span><h2>Understand production<br />before changing it.</h2><p>Connect once, audit real evidence, investigate the root cause, and generate a bounded plan.</p><a href="#quickstart">Run the quickstart <b>→</b></a></section>
-      <footer><a className="brand" href="#top"><Mark compact /><span>DeepStack</span></a><p>AI Infrastructure Engineer · Evidence-driven. Policy-controlled.</p><div><a href="#docs">Docs</a><a href="#security">Security</a><a href="#product">Product</a></div><span>© 2026 DeepStack</span></footer>
+      <footer>
+        <a className="brand" href="#top" aria-label="DeepStack Home">
+          <Logo height={26} />
+        </a>
+        <p>AI Infrastructure Engineer · Evidence-driven. Policy-controlled.</p>
+        <div><a href="#docs">Docs</a><a href="#security">Security</a><a href="#product">Product</a></div>
+        <span>© 2026 DeepStack</span>
+      </footer>
     </main>
   );
 }
